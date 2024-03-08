@@ -22,16 +22,15 @@ const ChildMeasurer = ({setMaxDimensions, children, show}: ChildMeasurerProps) =
 		}
 	}
 
-//	const debouncedCallback = useMemo(() => debounce(() => setDims(pDims), 300, {leading: true, trailing: false}), [setDims])
-//
-//	useEffect(() => {
-//		window.addEventListener('resize', debouncedCallback);
-//		return () => {
-//			window.removeEventListener('resize', debouncedCallback);
-//			debouncedCallback.cancel();
-//		};
-//	}, []);
-//				<div key={idx} ref={element => onElementChanged(element, idx)} style={{minWidth: maxDims["width"], minHeight: maxDims["height"]}}>
+	const debouncedCallback = useMemo(() => debounce(() => setMaxDims({width: 0, height: 0}), 300, {leading: true, trailing: false}), [setDims])
+
+	useEffect(() => {
+		window.addEventListener('resize', debouncedCallback);
+		return () => {
+			window.removeEventListener('resize', debouncedCallback);
+			debouncedCallback.cancel();
+		};
+	}, []);
 
 	return (
 		<Fragment>
