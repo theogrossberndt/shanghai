@@ -8,9 +8,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 type ChildMeasurerProps = {
 	setMaxDimensions: React.SetStateAction;
 	children: Array<React.ReactNode>;
+	show: boolean;
 };
 
-const ChildMeasurer = ({setMaxDimensions, children}: ChildMeasurerProps) => {
+const ChildMeasurer = ({setMaxDimensions, children, show}: ChildMeasurerProps) => {
 	const [maxDims, setMaxDims] = useState({width: 0, height: 0});
 
 	const onElementChanged = (element: HTMLDivElement | null, idx: number): void => {
@@ -35,7 +36,10 @@ const ChildMeasurer = ({setMaxDimensions, children}: ChildMeasurerProps) => {
 	return (
 		<Fragment>
 			{children.map((child, idx) => (
-				<div key={idx} ref={element => onElementChanged(element, idx)} style={{opacity: (maxDims['width'] > 0 && maxDims['height'] > 0) ? 1 : 0, transition: "opacity 500ms"}}>
+				<div key={idx} ref={element => onElementChanged(element, idx)} style={{...{
+					opacity: (maxDims['width'] <= 0 || maxDims['height'] <= 0 || !show) ? 0 : 1,
+					transition: "opacity 500ms"
+				}, ...(show ? {} : {position: 'absolute'})}}>
 					{child}
 				</div>
 			))}
